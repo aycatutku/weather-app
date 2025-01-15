@@ -1,14 +1,11 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {View,Text, StyleSheet, Alert} from 'react-native';
+import {View,Text, StyleSheet, Alert, Image} from 'react-native';
 import Container from "../components/Container";
 import * as Location from 'expo-location';
-import {
-    useGetCityByCoordsQuery,
-    useGetCityWeatherQuery, useLazyGetCityByCoordsQuery,
-} from '../api/weatherApi';
-import {themes} from "../constants/themes";
+import {useLazyGetCityByCoordsQuery} from '../api/weatherApi';
 import {ThemeContext} from "../context/ThemeContext";
 import {alignCenter, alignSelfCenter} from "../constants/globalStyles";
+import {DeviceHeight, DeviceWidth} from "../constants/device";
 
 
 export default function HomeScreen() {
@@ -44,6 +41,18 @@ export default function HomeScreen() {
         <Container style={alignCenter}>
             {cityData ? (
                 <View style={alignSelfCenter}>
+
+                    <Image
+                        style={{
+                            width: DeviceWidth/2,
+                            height: DeviceHeight/4,
+                            alignSelf: 'center',
+                        }}
+                        source={{
+                            uri: `https://openweathermap.org/img/wn/${cityData.weather[0].icon}@2x.png`,
+                        }}
+                    />
+
                     <Text style={{color:theme.elementColor}}>Hava Durumu</Text>
                     <Text style={{color:theme.elementColor}}>Şehir: {cityData.name}, {cityData.sys.country}</Text>
                     <Text style={{color:theme.elementColor}}>Sıcaklık: {cityData.main.temp.toFixed(1)}°C</Text>
