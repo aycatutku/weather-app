@@ -1,22 +1,21 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {View,Text, StyleSheet, Alert, Image} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, Alert} from 'react-native';
 import Container from "../components/Container";
 import * as Location from 'expo-location';
 import {useLazyGetCityByCoordsQuery} from '../api/weatherApi';
-import {ThemeContext} from "../context/ThemeContext";
 import {alignCenter, alignSelfCenter} from "../constants/globalStyles";
-import {DeviceHeight, DeviceWidth} from "../constants/device";
-
+import CustomText from "../components/CustomText";
+import WeatherIcon from "../components/WeatherIcon";
 
 export default function HomeScreen() {
 
     const [location, setLocation] = useState(null);
 
-    const [getCityByCoords, { data: cityData, isLoading, isError, error }] = useLazyGetCityByCoordsQuery();
+    const [getCityByCoords, {data: cityData, isLoading, isError, error}] = useLazyGetCityByCoordsQuery();
 
     useEffect(() => {
         (async () => {
-            let { status } = await Location.requestForegroundPermissionsAsync();
+            let {status} = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
                 Alert.alert('Konum İzni Gerekli', 'Lütfen konum izni verin.');
                 return;
@@ -29,49 +28,36 @@ export default function HomeScreen() {
 
     useEffect(() => {
         if (location) {
-            getCityByCoords({ lat: location.latitude, lon: location.longitude });
+            getCityByCoords({lat: location.latitude, lon: location.longitude});
         }
     }, [location]);
-
-    console.log(cityData);
-
-    const { theme } = useContext(ThemeContext);
 
     return (
         <Container style={alignCenter}>
             {cityData ? (
                 <View style={alignSelfCenter}>
 
-                    <Image
-                        style={{
-                            width: DeviceWidth/2,
-                            height: DeviceHeight/4,
-                            alignSelf: 'center',
-                        }}
-                        source={{
-                            uri: `https://openweathermap.org/img/wn/${cityData.weather[0].icon}@2x.png`,
-                        }}
-                    />
+                    <WeatherIcon icon={cityData.weather[0].icon}/>
 
-                    <Text style={{color:theme.elementColor}}>Hava Durumu</Text>
-                    <Text style={{color:theme.elementColor}}>Şehir: {cityData.name}, {cityData.sys.country}</Text>
-                    <Text style={{color:theme.elementColor}}>Sıcaklık: {cityData.main.temp.toFixed(1)}°C</Text>
-                    <Text style={{color:theme.elementColor}}>Hissedilen: {cityData.main.feels_like.toFixed(1)}°C</Text>
-                    <Text style={{color:theme.elementColor}}>Durum: {cityData.weather[0].description}</Text>
-                    <Text style={{color:theme.elementColor}}>Rüzgar Hızı: {cityData.wind.speed} m/s</Text>
-                    <Text style={{color:theme.elementColor}}>Nem: %{cityData.main.humidity}</Text>
+                    <CustomText
+                        font="RobotoBold"
+                        size={20}
+                        textAlign={'center'}
+                    >
+                        Hava Durumu
+                    </CustomText>
+
+                    <CustomText font="RobotoRegular">Şehir: {cityData.name}, {cityData.sys.country}</CustomText>
+                    <CustomText font="RobotoRegular">Sıcaklık: {cityData.main.temp.toFixed(1)}°C</CustomText>
+                    <CustomText font="RobotoRegular">Hissedilen: {cityData.main.feels_like.toFixed(1)}°C</CustomText>
+                    <CustomText font="RobotoRegular">Durum: {cityData.weather[0].description}</CustomText>
+                    <CustomText font="RobotoRegular">Rüzgar Hızı: {cityData.wind.speed} m/s</CustomText>
+                    <CustomText font="RobotoRegular">Nem: %{cityData.main.humidity}</CustomText>
+
                 </View>
             ) : (
-                <Text style={styles.text}>Hava durumu bilgisi yok.</Text>
+                <Text>Hava durumu bilgisi yok.</Text>
             )}
         </Container>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-});
