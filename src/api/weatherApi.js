@@ -17,5 +17,6 @@ export const weatherApi = baseApi.injectEndpoints({
 export const {
     useGetCityByCoordsQuery,
     useGetCityWeatherQuery,
+    useLazyGetCityWeatherQuery,
     useLazyGetCityByCoordsQuery,
 } = weatherApi;
