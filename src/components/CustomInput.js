@@ -41,7 +41,7 @@ const CustomInput = ({
                     onChangeText={onChangeText}
                     placeholder={placeholder}
                     placeholderTextColor={theme.placeholderColor}
-                    style={[styles.input, inputStyle]}
+                    style={[styles.input, inputStyle, {color:theme.elementColor}]}
                     {...restProps}
                 />
 
