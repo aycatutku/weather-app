@@ -6,6 +6,7 @@ import SearchScreen from '../screens/Search';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import CustomTabBarContent from "./CustomTabBarContent";
 import {ThemeContext} from "../context/ThemeContext";
+import {ModalController} from "../components/ModalController";
 
 const Tab = createBottomTabNavigator();
 
@@ -40,6 +41,8 @@ export default function BottomTabNavigator() {
                 <Tab.Screen name="Home" component={HomeScreen} />
                 <Tab.Screen name="Search" component={SearchScreen} />
             </Tab.Navigator>
+
+            <ModalController/>
         </NavigationContainer>
     );
 }
