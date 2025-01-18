@@ -7,7 +7,9 @@ import {moderateScale} from "../constants/scaling";
 const CustomText = (props) => {
 
     const {
-        style, children, font = "Regular",
+        style,
+        children,
+        font = "Regular",
         size = 16,
         textAlign = "left",
         ...restProps
@@ -25,7 +27,7 @@ const CustomText = (props) => {
 
 
     return <Text
-        style={[dynamicStyle, {color: theme.elementColor}]}
+        style={[{color: theme.elementColor}, dynamicStyle]}
         {...restProps}
     >
         {children}
